@@ -1,0 +1,13 @@
+<header class="flex justify-between items-center p-4 bg-gray-100 shadow">
+  <div class="flex items-center gap-2">
+    <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
+    <span class="font-bold text-xl">Los Pitufs</span>
+  </div>
+
+  <div>
+    <button (click)="openRegister()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Registrar</button>
+    <button (click)="openLogin()" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">Login</button>
+  </div>
+</header>
+
+<app-register-modal *ngIf="showRegister" (close)="closeRegister()" />
