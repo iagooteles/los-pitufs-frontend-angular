@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginModalComponent } from '../../../features/auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from '../../../features/auth/register-modal/register-modal.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,16 +13,17 @@ import { RegisterModalComponent } from '../../../features/auth/register-modal/re
 })
 export class HeaderComponent {
   showRegister = false;
+  showLogin = false;
 
-  openRegister() {
-    this.showRegister = true;
-  }
+  constructor(public authService: AuthService) {}
 
-  closeRegister() {
-    this.showRegister = false;
-  }
+  openRegister() { this.showRegister = true; }
+  closeRegister() { this.showRegister = false; }
 
-  openLogin() {
-    alert('Login ainda não implementado 😎');
+  openLogin() { this.showLogin = true; }
+  closeLogin() { this.showLogin = false; }
+
+  logout() {
+    this.authService.logout();
   }
 }

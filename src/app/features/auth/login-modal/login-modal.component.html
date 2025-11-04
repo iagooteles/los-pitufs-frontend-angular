@@ -3,10 +3,10 @@
     <h2 class="text-2xl font-semibold mb-4 text-center">Login</h2>
 
     <form (ngSubmit)="onSubmit()" class="flex flex-col space-y-3">
-      <input type="email" placeholder="Email" class="border rounded-lg px-3 py-2" required>
-      <input type="password" placeholder="Senha" class="border rounded-lg px-3 py-2" required>
-      <button type="submit" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-        Entrar
+      <input [(ngModel)]="email" name="email" type="email" placeholder="Email" class="border rounded-lg px-3 py-2" required>
+      <input [(ngModel)]="password" name="password" type="password" placeholder="Senha" class="border rounded-lg px-3 py-2" required>
+      <button type="submit" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
       </button>
     </form>
 

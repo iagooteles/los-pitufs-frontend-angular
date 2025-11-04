@@ -5,9 +5,16 @@
   </div>
 
   <div>
-    <button (click)="openRegister()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Registrar</button>
-    <button (click)="openLogin()" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">Login</button>
+    <ng-container *ngIf="!authService.isLoggedIn(); else logged">
+      <button (click)="openRegister()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Registrar</button>
+      <button (click)="openLogin()" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800">Login</button>
+    </ng-container>
+
+    <ng-template #logged>
+      <button (click)="logout()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Logout</button>
+    </ng-template>
   </div>
 </header>
 
 <app-register-modal *ngIf="showRegister" (close)="closeRegister()" />
+<app-login-modal *ngIf="showLogin" (close)="closeLogin()" />
