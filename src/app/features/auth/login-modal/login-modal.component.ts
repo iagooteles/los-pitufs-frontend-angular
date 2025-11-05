@@ -13,6 +13,7 @@ import { LoginDTO } from '../../../core/models/login-dto.model';
 })
 export class LoginModalComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() openRegister = new EventEmitter<void>();
 
   email = '';
   password = '';
@@ -33,9 +34,9 @@ export class LoginModalComponent {
     this.authService.login(loginDTO).subscribe({
       next: (res) => {
         
-        console.log('Resposta do login:', res); // <-- aqui, log completo
-        console.log('Usuário logado:', res.user); // <-- só o user
-        console.log('Token JWT::', res.token);    // <-- só o token
+        console.log('Resposta do login:', res);
+        console.log('Usuário logado:', res.user);
+        console.log('Token JWT::', res.token);
 
         alert(`Bem-vindo, ${res.user.username}!`);
         localStorage.setItem('token', res.token);
@@ -48,5 +49,10 @@ export class LoginModalComponent {
         this.isSubmitting = false;
       }
     });
+  }
+
+  openRegisterModal() {
+    this.close.emit();
+    this.openRegister.emit();
   }
 }

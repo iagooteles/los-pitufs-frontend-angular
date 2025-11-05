@@ -1,20 +1,22 @@
-<header class="flex justify-between items-center p-4 bg-gray-100 shadow">
-  <div class="flex items-center gap-2">
-    <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
-    <span class="font-bold text-xl">Los Pitufs</span>
-  </div>
+<header class="bg-[#30355c] p-4 shadow">
+  <div class="max-w-6xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
+      <span class="font-bold text-xl text-white">Los Pitufs</span>
+    </div>
 
-  <div>
-    <ng-container *ngIf="!authService.isLoggedIn(); else logged">
-      <button (click)="openRegister()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer">Registrar</button>
-      <button (click)="openLogin()" class="ml-2 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 cursor-pointer">Login</button>
-    </ng-container>
+    <div class="flex items-center gap-8 text-white text-sm font-medium">
+      <ng-container *ngIf="!authService.isLoggedIn(); else logged">
+        <a (click)="openRegister()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">Registrar</a>
+        <a (click)="openLogin()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">Login</a>
+      </ng-container>
 
-    <ng-template #logged>
-      <button (click)="logout()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Logout</button>
-    </ng-template>
+      <ng-template #logged>
+        <a (click)="logout()" class="hover:text-pink-400 cursor-pointer transition-colors">Logout</a>
+      </ng-template>
+    </div>
   </div>
 </header>
 
-<app-register-modal *ngIf="showRegister" (close)="closeRegister()" />
-<app-login-modal *ngIf="showLogin" (close)="closeLogin()" />
+<app-register-modal *ngIf="showRegister" (close)="closeRegister()" (openLoginModal)="openLogin()" />
+<app-login-modal *ngIf="showLogin" (close)="closeLogin()" (openRegister)="openRegister()" />

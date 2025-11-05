@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class RegisterModalComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() openLoginModal = new EventEmitter<void>();
 
   user: User = {
     email: '',
@@ -49,5 +50,10 @@ export class RegisterModalComponent {
 
   onClose() {
     this.close.emit();
+  }
+
+  openLogin() {
+    this.close.emit();
+    this.openLoginModal.emit();
   }
 }
