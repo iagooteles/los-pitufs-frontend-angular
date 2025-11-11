@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { LoginModalComponent } from '../../../features/auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from '../../../features/auth/register-modal/register-modal.component';
 import { AuthService } from '../../../services/auth.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, LoginModalComponent, RegisterModalComponent],
+  imports: [CommonModule, LoginModalComponent, RegisterModalComponent, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

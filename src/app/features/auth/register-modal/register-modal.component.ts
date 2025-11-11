@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User, UserService } from '../../../services/user';
+import { User, UserService } from '../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

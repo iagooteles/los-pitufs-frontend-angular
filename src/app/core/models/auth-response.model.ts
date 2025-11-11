@@ -1,4 +1,4 @@
-import { User } from "../../services/user";
+import { User } from "../../services/user.service";
 
 export interface AuthResponse {
     user: User;

@@ -1,7 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserCard, USER_CARDS } from './user-carousel.data'
 import { RouterModule } from '@angular/router';
+import { User, UserService } from '../../../services/user.service';
+
+export interface UserCard {
+  id: number;
+  image: string;
+  nickname: string;
+}
 
 @Component({
   selector: 'app-user-carousel',
@@ -9,9 +15,26 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule],
   templateUrl: './user-carousel.component.html'
 })
-export class UserCarouselComponent {
-  userCards: UserCard[] = USER_CARDS;
+export class UserCarouselComponent implements OnInit {
+  userCards: UserCard[] = [];
   index = 0;
+
+  constructor(private userService: UserService) {}
+
+  ngOnInit() {
+    this.userService.getAll().subscribe({
+      next: (users: User[]) => {
+        this.userCards = users.map(user => ({
+          id: user.id!,
+          nickname: user.username,
+          image: user.profilePictureUrl || 'https://i.pravatar.cc/150?img=1'
+        }));
+      },
+      error: err => {
+        console.error('Erro ao carregar usuários', err);
+      }
+    });
+  }
 
   next() {
     if (this.index + 6 < this.userCards.length) this.index += 6;

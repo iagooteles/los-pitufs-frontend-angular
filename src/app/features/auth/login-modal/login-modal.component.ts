@@ -34,12 +34,18 @@ export class LoginModalComponent {
     this.authService.login(loginDTO).subscribe({
       next: (res) => {
         
+        // TODO: remover esses logs dps!
         console.log('Resposta do login:', res);
         console.log('Usuário logado:', res.user);
         console.log('Token JWT::', res.token);
 
         alert(`Bem-vindo, ${res.user.username}!`);
+        
         localStorage.setItem('token', res.token);
+        if (res.user?.id != null) {
+          localStorage.setItem('userId', res.user.id.toString());
+        }
+
         this.isSubmitting = false;
         this.close.emit();
       },

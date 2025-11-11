@@ -1,22 +1,42 @@
 <header class="bg-[#30355c] p-4 shadow">
   <div class="max-w-6xl mx-auto flex justify-between items-center">
     <div class="flex items-center gap-2">
-      <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
-      <span class="font-bold text-xl text-white">Los Pitufs</span>
+      <a [routerLink]="['/']" class="flex items-center gap-2">
+        <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
+        <span class="font-bold text-xl text-white hover:text-pink-400">Los Pitufs</span>
+      </a>
     </div>
 
     <div class="flex items-center gap-8 text-white text-sm font-medium">
+      <!-- Usuário não está logado -->
       <ng-container *ngIf="!authService.isLoggedIn(); else logged">
-        <a (click)="openRegister()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">Registrar</a>
-        <a (click)="openLogin()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">Login</a>
+        <a (click)="openRegister()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+          Registrar
+        </a>
+        <a (click)="openLogin()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+          Login
+        </a>
       </ng-container>
 
+      <!-- Usuário está logado -->
       <ng-template #logged>
-        <a (click)="logout()" class="hover:text-pink-400 cursor-pointer transition-colors">Logout</a>
+        <span class="text-lg">Olá, {{ authService.user()?.username }}</span>
+        <a (click)="logout()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+          Logout
+        </a>
       </ng-template>
     </div>
   </div>
 </header>
 
-<app-register-modal *ngIf="showRegister" (close)="closeRegister()" (openLoginModal)="openLogin()" />
-<app-login-modal *ngIf="showLogin" (close)="closeLogin()" (openRegister)="openRegister()" />
+<!-- Modais -->
+<app-register-modal
+  *ngIf="showRegister"
+  (close)="closeRegister()"
+  (openLoginModal)="openLogin()"
+/>
+<app-login-modal
+  *ngIf="showLogin"
+  (close)="closeLogin()"
+  (openRegister)="openRegister()"
+/>
