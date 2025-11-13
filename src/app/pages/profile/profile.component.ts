@@ -1,35 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService, User } from '../../services/user.service';
-import { FollowService } from '../../services/follow.service';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
-
-interface Follower {
-  id: number;
-  username: string;
-}
+import { UserService, User } from '../../services/user.service';
+import { FollowService } from '../../services/follow.service';
+import { PlaylistService, Playlist } from '../../services/playlist.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css',
+  templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {
   userData?: User;
+  playlists: Playlist[] = [];
   userId!: number;
   loggedUserId: number | null = null;
   isFollowing = false;
   followersCount = 0;
   followingCount = 0;
   loading = true;
+  isOwnProfile = false;
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private followService: FollowService
+    private followService: FollowService,
+    private playlistService: PlaylistService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -40,6 +39,7 @@ export class ProfileComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.userId = +params['id'];
+      this.isOwnProfile = this.loggedUserId === this.userId;
       this.loadProfile();
     });
   }
@@ -47,28 +47,31 @@ export class ProfileComponent implements OnInit {
   loadProfile() {
     this.loading = true;
 
-  forkJoin({
-    user: this.userService.getById(this.userId),
-    followers: this.followService.getFollowers(this.userId),
-    following: this.followService.getFollowing(this.userId),
-  }).subscribe({
-    next: ({ user, followers, following }) => {
-      this.userData = user;
-      this.followersCount = followers.length;
-      this.followingCount = following.length;
+    forkJoin({
+      user: this.userService.getById(this.userId),
+      followers: this.followService.getFollowers(this.userId),
+      following: this.followService.getFollowing(this.userId),
+      playlists: this.playlistService.getPlaylistsByUser(this.userId)
+    }).subscribe({
+      next: ({ user, followers, following, playlists }) => {
+        this.userData = user;
+        this.followersCount = followers.length;
+        this.followingCount = following.length;
+        this.playlists = playlists;
 
-      this.isFollowing = this.loggedUserId != null
-        ? followers.some(f => f.id === this.loggedUserId)
-        : false;
+        this.isFollowing =
+          this.loggedUserId != null
+            ? followers.some((f) => f.id === this.loggedUserId)
+            : false;
 
-      this.loading = false;
-    },
-    error: (err) => {
-      console.error('Erro ao carregar perfil:', err);
-      this.loading = false;
-    }
-  });
-
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar perfil:', err);
+        this.loading = false;
+      }
+    });
   }
 
   toggleFollow() {
@@ -82,22 +85,19 @@ export class ProfileComponent implements OnInit {
         next: () => {
           this.isFollowing = false;
           this.followersCount = Math.max(0, this.followersCount - 1);
+          this.cdr.detectChanges();
         },
-        error: (err) => console.error('Erro ao deixar de seguir:', err),
+        error: (err) => console.error('Erro ao deixar de seguir:', err)
       });
     } else {
       this.followService.followUser(this.loggedUserId, this.userId).subscribe({
         next: () => {
-          console.log('Follow enviado com sucesso');
           this.isFollowing = true;
           this.followersCount++;
-          this.loadProfile();
+          this.cdr.detectChanges();
         },
-        error: (err) => console.error('Erro ao seguir usuário:', err),
+        error: (err) => console.error('Erro ao seguir usuário:', err)
       });
     }
   }
 }
-
-
-// TODO: verificar a atualização que não está indo ao dar follow! 

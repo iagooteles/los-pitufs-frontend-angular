@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GameService, Game } from '../../services/games.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game',
@@ -12,33 +13,30 @@ import { GameService, Game } from '../../services/games.service';
 })
 export class GameComponent implements OnInit {
   gameData?: Game;
-  gameId!: number;
   loading = true;
+  errorMessage = '';
 
   constructor(
     private route: ActivatedRoute,
-    private gameService: GameService
+    private gameService: GameService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.gameId = +params['id'];
-      this.loadGame();
-    });
-  }
-
-  loadGame() {
-    this.loading = true;
-
-    this.gameService.getById(this.gameId).subscribe({
-      next: (game) => {
-        this.gameData = game;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar jogo:', err);
-        this.loading = false;
-      },
-    });
+    this.route.params
+      .pipe(switchMap((params) => this.gameService.getById(+params['id'])))
+      .subscribe({
+        next: (game) => {
+          this.gameData = game;
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar jogo:', err);
+          this.errorMessage = 'Erro ao carregar este jogo 😞';
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+      });
   }
 }

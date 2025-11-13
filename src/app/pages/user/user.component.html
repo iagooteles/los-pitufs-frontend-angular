@@ -24,19 +24,6 @@
         <span>{{ followersCount }} <span class="text-gray-400">seguidores</span></span>
         <span>{{ followingCount }} <span class="text-gray-400">seguindo</span></span>
       </div>
-
-      <!-- Botão seguir -->
-      <button
-        *ngIf="!isOwnProfile"
-        class="mt-6 px-6 py-2 rounded-lg transition duration-300 cursor-pointer"
-        [ngClass]="{
-          'bg-pink-500 hover:bg-pink-600': !isFollowing,
-          'bg-gray-700 hover:bg-gray-600': isFollowing
-        }"
-        (click)="toggleFollow()"
-      >
-        {{ isFollowing ? 'Seguindo' : 'Seguir' }}
-      </button>
     </div>
 
     <!-- Playlists -->
@@ -60,13 +47,33 @@
             </p>
           </div>
         </div>
+
+        <div class="text-center mt-10">
+          <button
+            class="px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition cursor-pointer"
+            (click)="criarPlaylist()"
+          >
+            Criar playlist!
+          </button>
+        </div>
       </ng-container>
 
       <ng-template #noPlaylists>
         <div class="text-gray-400 text-center py-8">
           <p class="mb-4 text-base md:text-lg">🎶 Não há playlists ainda.</p>
+          <button
+            class="px-8 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition cursor-pointer"
+            (click)="criarPlaylist()"
+          >
+            Criar uma agora!
+          </button>
         </div>
       </ng-template>
     </div>
+  </div>
+
+  <!-- Formulário de colaboração -->
+  <div class="mt-12">
+    <app-collab-form></app-collab-form>
   </div>
 </div>

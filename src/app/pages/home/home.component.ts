@@ -6,6 +6,7 @@ import { CarouselComponent } from '../../core/components/games-carousel/carousel
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [CarouselComponent, GameOfWeekComponent, UserCarouselComponent, HttpClientModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
