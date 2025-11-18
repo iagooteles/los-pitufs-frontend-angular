@@ -5,11 +5,12 @@ import { forkJoin } from 'rxjs';
 import { UserService, User } from '../../services/user.service';
 import { FollowService } from '../../services/follow.service';
 import { PlaylistService, Playlist } from '../../services/playlist.service';
+import { AchievementsSectionComponent } from "../../core/components/achievements-section/achievements-section.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AchievementsSectionComponent],
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {

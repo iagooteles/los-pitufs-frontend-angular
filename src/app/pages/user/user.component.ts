@@ -6,11 +6,13 @@ import { UserService, User } from '../../services/user.service';
 import { FollowService } from '../../services/follow.service';
 import { PlaylistService, Playlist } from '../../services/playlist.service';
 import { CollabFormComponent } from "../../core/components/collab-form/collab-form.component";
+import { AddGameComponent } from "../../core/components/add-game/add-game.component";
+import { AchievementsSectionComponent } from "../../core/components/achievements-section/achievements-section.component";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, CollabFormComponent],
+  imports: [CommonModule, CollabFormComponent, AddGameComponent, AchievementsSectionComponent],
   templateUrl: './user.component.html',
 })
 export class UserComponent implements OnInit {
@@ -20,6 +22,8 @@ export class UserComponent implements OnInit {
   followersCount = 0;
   followingCount = 0;
   loading = true;
+  isAdmin = false;
+  addJogoAberto = false;
   playlists: Playlist[] = [];
 
   constructor(
@@ -53,6 +57,9 @@ export class UserComponent implements OnInit {
     }).subscribe({
       next: ({ user, followers, following, playlists }) => {
         this.userData = user;
+
+        this.isAdmin = user.role === 'ADMIN';
+
         this.followersCount = followers.length;
         this.followingCount = following.length;
         this.playlists = playlists;
@@ -83,5 +90,9 @@ export class UserComponent implements OnInit {
       },
       error: (err) => console.error('Erro ao criar playlist:', err),
     });
+  }
+
+  toggleAddGame() {
+    this.addJogoAberto = !this.addJogoAberto;
   }
 }

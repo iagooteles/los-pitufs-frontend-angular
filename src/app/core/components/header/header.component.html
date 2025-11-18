@@ -3,19 +3,27 @@
     <div class="flex items-center gap-2">
       <a [routerLink]="['/']" class="flex items-center gap-2">
         <img src="assets/logo3.svg" alt="Logo" class="h-10 w-10" />
-        <span class="font-bold text-xl text-white hover:text-pink-400">
-          Los Pitufs
-        </span>
+        <span class="font-bold text-xl text-white hover:text-pink-400"> Los Pitufs </span>
       </a>
     </div>
 
     <div class="flex items-center gap-8 text-white text-sm font-medium">
+      <a
+        [routerLink]="['/games']"
+        class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+        Ver Jogos
+      </a>
+
       <!-- Usuário não está logado -->
       <ng-container *ngIf="!authService.user(); else logged">
-        <a (click)="openRegister()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+        <a
+          (click)="openRegister()"
+          class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
           Registrar
         </a>
-        <a (click)="openLogin()" class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
+        <a
+          (click)="openLogin()"
+          class="hover:text-pink-400 cursor-pointer transition-colors text-xl">
           Login
         </a>
       </ng-container>
@@ -37,13 +45,5 @@
 </header>
 
 <!-- Modais -->
-<app-register-modal
-  *ngIf="showRegister"
-  (close)="closeRegister()"
-  (openLoginModal)="openLogin()"
-/>
-<app-login-modal
-  *ngIf="showLogin"
-  (close)="closeLogin()"
-  (openRegister)="openRegister()"
-/>
+<app-register-modal *ngIf="showRegister" (close)="closeRegister()" (openLoginModal)="openLogin()" />
+<app-login-modal *ngIf="showLogin" (close)="closeLogin()" (openRegister)="openRegister()" />

@@ -7,8 +7,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
   selector: 'app-carousel',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css'],
+  templateUrl: './carousel.component.html'
 })
 
 export class CarouselComponent implements OnInit {

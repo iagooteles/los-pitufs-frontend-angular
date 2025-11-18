@@ -8,8 +8,7 @@ import { switchMap } from 'rxjs/operators';
   selector: 'app-game',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './games.component.html',
-  styleUrls: ['./games.component.css'],
+  templateUrl: './game.component.html'
 })
 export class GameComponent implements OnInit {
   gameData?: Game;

@@ -1,0 +1,27 @@
+<div class="relative bg-gray-800 text-white rounded-lg overflow-hidden shadow-2xl max-w-7xl mx-auto my-6">
+  <img 
+    src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop" 
+    alt="Fundo de videogame abstrato" 
+    class="absolute inset-0 w-full h-full object-cover z-0"
+  >
+
+  <div class="absolute inset-0 bg-black opacity-60 z-10"></div>
+
+  <div class="relative z-20 flex flex-col justify-center items-start text-left p-8 md:p-24 min-h-[400px]">
+    
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight">
+      Bem-vindo ao Nosso Universo de Jogos!
+    </h1>
+    
+    <p class="text-lg md:text-xl text-gray-300 max-w-xl mb-8">
+      Explore um catálogo incrível, encontre seus próximos jogos favoritos e compartilhe suas aventuras.
+    </p>
+    
+    <a 
+      [routerLink]="['/games']" 
+      class="inline-block bg-pink-500 text-white font-bold py-3 mt-4 px-8 rounded-lg text-lg hover:bg-pink-600 focus:outline-none focus:ring-4 focus:ring-pink-300 transition-all duration-300 ease-in-out transform hover:scale-105"
+    >
+      Ver Todos os Jogos
+    </a>
+  </div>
+</div>

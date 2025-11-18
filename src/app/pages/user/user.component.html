@@ -72,8 +72,35 @@
     </div>
   </div>
 
+  <!-- Modal de adicionar jogo ao catálogo  -->
+  <div
+    class="mt-20 flex flex-col text-center"
+    *ngIf="isAdmin"
+  >
+    <h2 class="text-2xl font-bold text-pink-500">
+      Olá, Jovem Padawan (ADMIN)
+    </h2>
+
+    <button
+      *ngIf="!addJogoAberto"
+      class="mt-6 px-6 py-2 bg-pink-500 hover:bg-pink-600 transition text-white rounded-lg cursor-pointer"
+      (click)="toggleAddGame()"
+    >
+      ➕ Adicionar jogo ao catálogo
+    </button>
+
+    <app-add-game-modal
+      *ngIf="addJogoAberto"
+      (close)="addJogoAberto = false"
+    ></app-add-game-modal>
+  </div>
+
+
   <!-- Formulário de colaboração -->
   <div class="mt-12">
     <app-collab-form></app-collab-form>
   </div>
 </div>
+
+
+<app-achievements-section></app-achievements-section>

@@ -30,8 +30,8 @@ export class GameService {
     return this.http.get<Game>(`${this.apiUrl}/${id}`);
   }
 
-  create(game: Game): Observable<Game> {
-    return this.http.post<Game>(`${this.apiUrl}`, game);
+  uploadGame(formData: FormData): Observable<Game> {
+    return this.http.post<Game>(`${this.apiUrl}`, formData);
   }
 
   update(id: number, game: Game): Observable<Game> {
