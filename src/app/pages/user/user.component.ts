@@ -5,24 +5,26 @@ import { forkJoin } from 'rxjs';
 import { UserService, User } from '../../services/user.service';
 import { FollowService } from '../../services/follow.service';
 import { PlaylistService, Playlist } from '../../services/playlist.service';
+import { CollabFormComponent } from "../../core/components/collab-form/collab-form.component";
+import { AddGameComponent } from "../../core/components/add-game/add-game.component";
 import { AchievementsSectionComponent } from "../../core/components/achievements-section/achievements-section.component";
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, AchievementsSectionComponent],
-  templateUrl: './profile.component.html'
+  imports: [CommonModule, CollabFormComponent, AddGameComponent, AchievementsSectionComponent],
+  templateUrl: './user.component.html',
 })
-export class ProfileComponent implements OnInit {
+export class UserComponent implements OnInit {
   userData?: User;
-  playlists: Playlist[] = [];
   userId!: number;
   loggedUserId: number | null = null;
-  isFollowing = false;
   followersCount = 0;
   followingCount = 0;
   loading = true;
-  isOwnProfile = false;
+  isAdmin = false;
+  addJogoAberto = false;
+  playlists: Playlist[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -40,65 +42,57 @@ export class ProfileComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.userId = +params['id'];
-      this.isOwnProfile = this.loggedUserId === this.userId;
-      this.loadProfile();
+      this.loadUser();
     });
   }
 
-  loadProfile() {
+  loadUser() {
     this.loading = true;
 
     forkJoin({
       user: this.userService.getById(this.userId),
       followers: this.followService.getFollowers(this.userId),
       following: this.followService.getFollowing(this.userId),
-      playlists: this.playlistService.getPlaylistsByUser(this.userId)
+      playlists: this.playlistService.getPlaylistsByUser(this.userId),
     }).subscribe({
       next: ({ user, followers, following, playlists }) => {
         this.userData = user;
+
+        this.isAdmin = user.role === 'ADMIN';
+
         this.followersCount = followers.length;
         this.followingCount = following.length;
         this.playlists = playlists;
-
-        this.isFollowing =
-          this.loggedUserId != null
-            ? followers.some((f) => f.id === this.loggedUserId)
-            : false;
-
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Erro ao carregar perfil:', err);
+        console.error('Erro ao carregar usuário:', err);
         this.loading = false;
-      }
+        this.cdr.detectChanges();
+      },
     });
   }
 
-  toggleFollow() {
-    if (this.loggedUserId == null) {
-      alert('Você precisa estar logado para seguir usuários!');
-      return;
-    }
+  criarPlaylist() {
+    const nome = prompt('Digite o nome da playlist:');
+    if (!nome || !this.loggedUserId) return;
 
-    if (this.isFollowing) {
-      this.followService.unfollowUser(this.loggedUserId, this.userId).subscribe({
-        next: () => {
-          this.isFollowing = false;
-          this.followersCount = Math.max(0, this.followersCount - 1);
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Erro ao deixar de seguir:', err)
-      });
-    } else {
-      this.followService.followUser(this.loggedUserId, this.userId).subscribe({
-        next: () => {
-          this.isFollowing = true;
-          this.followersCount++;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Erro ao seguir usuário:', err)
-      });
-    }
+    const novaPlaylist: Playlist = {
+      name: nome,
+      description: 'Minha nova playlist 🎵',
+    };
+
+    this.playlistService.createPlaylist(this.loggedUserId, novaPlaylist).subscribe({
+      next: (playlist) => {
+        this.playlists.push(playlist);
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Erro ao criar playlist:', err),
+    });
+  }
+
+  toggleAddGame() {
+    this.addJogoAberto = !this.addJogoAberto;
   }
 }

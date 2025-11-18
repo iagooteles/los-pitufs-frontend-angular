@@ -8,7 +8,7 @@ import { FooterComponent } from './core/components/footer/footer.component';
   standalone: true,
   imports: [HeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './app.html',
-  styleUrls: ['./app.css'] // <- atenção aqui
+  styleUrls: ['./app.css']
 })
 export class App {
   protected readonly title = signal('los-pitufs-frontend-angular');

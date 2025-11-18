@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginModalComponent } from '../../../features/auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from '../../../features/auth/register-modal/register-modal.component';
