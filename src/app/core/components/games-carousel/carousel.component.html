@@ -14,7 +14,7 @@
       class="bg-white rounded-xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1 overflow-hidden flex flex-col"
     >
       <img
-        [src]="game.coverImageUrl"
+        [src]="getCoverUrl(game)"
         [alt]="game.title"
         class="w-full h-48 object-cover"
       />

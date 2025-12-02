@@ -16,12 +16,14 @@ export class CarouselComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
+
   constructor(
     private gameService: GameService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+  
     this.gameService.getAll().subscribe({
       next: (games) => {
         const limitedGames = games.slice(0, 12);
@@ -56,5 +58,17 @@ export class CarouselComponent implements OnInit {
 
   get visible() {
     return this.gameCards.slice(this.index, this.index + 4);
+  }
+
+  getCoverUrl(game: Game): string {
+    if (!game.coverImageUrl) {
+      return 'assets/default-cover.jpg';
+    }
+
+    if (game.coverImageUrl.startsWith('http://') || game.coverImageUrl.startsWith('https://')) {
+      return game.coverImageUrl;
+    }
+
+    return `http://localhost:8080/uploads/${game.coverImageUrl}`;
   }
 }

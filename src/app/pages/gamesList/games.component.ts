@@ -71,5 +71,4 @@ export class GamesListComponent implements OnInit {
     return `http://localhost:8080/uploads/${game.coverImageUrl}`;
   }
 
-
 }

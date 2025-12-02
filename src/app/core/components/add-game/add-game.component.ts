@@ -31,7 +31,6 @@ export class AddGameComponent {
     });
   }
 
-  // Função para capturar o arquivo do input
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -46,7 +45,6 @@ export class AddGameComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Monta FormData
     const formData = new FormData();
     formData.append('title', this.formAddGame.get('title')?.value);
     formData.append('description', this.formAddGame.get('description')?.value);
